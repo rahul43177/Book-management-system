@@ -29,9 +29,16 @@ const createBook = async (req,res) =>{
             }
         }
     } catch(error) {
-        res.status(500).send({status : false , error : error.message});
+        if (error.message.includes('validation')) {
+            return res.status(400).send({ status: false, message: error.message })
+        } else if (error.message.includes('duplicate')) {
+            return res.status(400).send({ status: false, message: error.message })
+        } else {
+            res.status(500).json({ status: false, message: error.message })
+        }
     }
 }
+
 
 
 const getBooks = async (req,res) => {
