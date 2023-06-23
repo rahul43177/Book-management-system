@@ -8,10 +8,10 @@ const createReview = async function(req,res) {
     try {
         const bookId = req.params.bookId
         const details = req.body
-        const {rating , reviewdAt , reviewedBy } = details
+        const {rating , reviewedAt , reviewedBy } = details
         if(!bookId) return res.status(404).send({status : false , message : "BookId is required"})
         if(!ObjectIdCheck(bookId)) return res.status(400).send({status : false , message : "BookId is invalid"})
-        if(!rating || !reviewdAt) return res.status(400).send({status : false , message : "Detais are missing"})
+        if(!rating) return res.status(400).send({status : false , message : "Details are missing"})
         if(!ratingRange(rating)) return res.status(400).send({status : false , message : "Rating is invalid"})
     
 
@@ -21,7 +21,7 @@ const createReview = async function(req,res) {
         const reviewDetails = {
             rating : rating , 
             bookId : bookId , 
-            reviewdAt : reviewdAt ,
+            reviewdAt : reviewedAt ,
         }
         if(req.body.review)  reviewDetails.review = req.body.review
         if(reviewedBy)  reviewDetails.reviewedBy = reviewedBy
@@ -32,7 +32,7 @@ const createReview = async function(req,res) {
             {$inc : {reviews : 1}} ,
             {new : true}
         )
-        book.reviewData = reviewCreate
+        book.reviewsData = reviewCreate
         res.status(201).send({status : true , message : "Review created successfully" , data : book})
 
 
@@ -62,7 +62,7 @@ const updateReview = async function(req,res) {
         const book = await bookModel.findOne({_id : bookId , isDeleted : false})
         if(!book) return res.status(404).send({status : false , message : "Book not found"})
 
-        const review  = await reviewModel.findONe({_id : reviewId , isDeleted : false})
+        const review  = await reviewModel.findOne({_id : reviewId , isDeleted : false})
         if(!review) return res.status(404).send({status : false , message :"Review not found"})
 
         if(bookId !=review.bookId) return res.status(400).send({status : false , message : "BookId is not valid "})

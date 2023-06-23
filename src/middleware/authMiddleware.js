@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken')
 
 const authentication = function(req,res,next) {
     try {
-        const token = req.header['x-api-key']
-        if(!token) return res.status(401).send({status : fasle , message : "Unauthorised "})
+        const token = req.headers['x-api-key']
+        if(!token) return res.status(401).send({status : false , message : "Unauthorised "})
 
         const decoded = jwt.verify(token , "rahul4317")
         req.userId = decoded.userId

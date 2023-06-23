@@ -8,7 +8,7 @@ const userRegister = async (req,res)=>{
     try {
         const details = req.body
         const {title , name , phone , email , password} = details
-        if(!title || !name || !phone || !email || !password || !name.trim()=='' || !email.trim()=='') {
+        if(!title || !name || !phone || !email || !password) {
             return res.status(400).send({status : false , message : "Please fill all the fields"})
         }
         if(!validator.isEmail(email)) return res.status(400).send({status : false , message : "Please enter valid email"})

@@ -6,7 +6,7 @@ const userModel = require('../model/userModel')
 
 const createBook = async (req,res) =>{
     try {
-        const details = req.body.details
+        const details = req.body
         const {title , excerpt , releasedAt , userId , subcategory , category , ISBN} = details
 
         if(!title || !excerpt || !userId || !subcategory || !category || !ISBN) return res.status(400).send({status : false , message : "All fields are required"})
@@ -70,10 +70,10 @@ const getBooksById =async (req,res) =>{
 const updateBook = async(req,res) =>{
     let bookId = req.params.bookId
     if(!bookId) return res.status(400).send({status : false , message : "Book id is required"})
-    if(ObjectIdCheck(bookId)) return res.status(400).send({status : false , message : "BookId is not valid"})
+    if(!ObjectIdCheck(bookId)) return res.status(400).send({status : false , message : "BookId is not valid"})
     const book = await bookModel.findOne({_id : bookId , isDeleted : false})
     if(!book) return res.status(400).send({status : false , message : "Book not found"})
-    if(book.userId != req.userId) return res.status(400).send*{status : false , message : "Access Denied"} 
+    if(book.userId != req.userId) return res.status(400).send*{status : false , message : "Access Denied"}  //authorisation
     
     const updateBookDetails = await bookModel.findOneAndUpdate(
         {_id : bookId , isDeleted : false},
@@ -95,7 +95,7 @@ const deleteBooksById = async function(req,res) {
         
         const deleteBooks = await bookModel.findOneAndUpdate(
             {_id : bookId , isDeleted :false},
-            {isDeleted : true , deleteAt : new Date()},
+            {isDeleted : true , deletedAt : new Date()},
             {new : true}
         )
         res.status(200).send({status : true , message : "Book deleted successfully" , data : deleteBooks})
@@ -118,4 +118,4 @@ const deleteBooksById = async function(req,res) {
 
 
 
-module.exports = {createBook , getBooks , updateBook , deleteBooksById}
+module.exports = {createBook , getBooks , updateBook ,getBooksById , deleteBooksById}
