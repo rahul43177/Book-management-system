@@ -21,9 +21,4 @@ router.put('/books/:bookId/review/:reviewId', updateReview)
 router.delete('/books/:bookId/review/:reviewId', deletedReview)
 
 
-
-
-
-
-
 module.exports = router

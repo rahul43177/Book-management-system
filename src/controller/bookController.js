@@ -108,14 +108,4 @@ const deleteBooksById = async function(req,res) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
 module.exports = {createBook , getBooks , updateBook ,getBooksById , deleteBooksById}
