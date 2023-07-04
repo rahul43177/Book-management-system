@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 const userRegister = async (req,res)=>{
     try {
         const details = req.body
-        const {title , name , phone , email , password} = details
+        const {title , name , phone , email , password} = details //destructuring
         if(!title || !name || !phone || !email || !password) {
             return res.status(400).send({status : false , message : "Please fill all the fields"})
         }

@@ -3,7 +3,7 @@ const userSchema = new mongoose.Schema({
     title: {
         type: String,
         enum: ['Mr', 'Mrs', 'Miss'],
-        required: true,
+        required: true, //mandatory field
     },
     name: {
         type: String,

@@ -3,7 +3,21 @@ const validator = require('validator')
 const {ObjectIdCheck} = require('../utils/verification')
 const reviewModel = require('../model/reviewModel')
 const userModel = require('../model/userModel')
-
+const {uploadFile} = require('../aws/aws')
+const createCover = async function(req,res) {
+    try {
+        let files = req.files
+        if(files && files.length > 0) {
+            let uploadedFilesURL = await uploadFile(files[0])
+            return res.status(200).send({msg : "File uploaded Succesfully" , data : uploadedFilesURL})
+        }
+        else {
+            return res.status(400).send({message : "No files found"})
+        }
+    } catch(error) {
+        res.status(500).send({status : false , error : error.message })
+    }
+}
 const createBook = async (req,res) =>{
     try {
         const details = req.body
@@ -108,4 +122,4 @@ const deleteBooksById = async function(req,res) {
     }
 }
 
-module.exports = {createBook , getBooks , updateBook ,getBooksById , deleteBooksById}
+module.exports = {createCover , createBook , getBooks , updateBook ,getBooksById , deleteBooksById}
